@@ -1,4 +1,6 @@
 package menu;
+
+
 import java.util.Scanner;
 
 import Constantes.Constantes;
@@ -16,7 +18,9 @@ public Menu(String[] menu_opcoes) {
 public int exibirOpcoes(String titulo, String divisor) {
 	
 	System.out.println(divisor);
-	System.out.println(titulo);
+    System.out.println("          FAST DELIVERY - Versão 1.0");
+    System.out.println(divisor);
+	System.out.println("              " + titulo);
 	System.out.println(divisor);
 	
 	for (int index = 0; index < menu_opcoes.length; index++) {

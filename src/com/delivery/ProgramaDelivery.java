@@ -1,20 +1,17 @@
 package com.delivery;
 
-import java.text.DateFormat;
+import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Scanner;
 
+import lanches.Bolo;
+import lanches.Massa;
 import lanches.Sanduiche;
 import menu.Menu;
-import tabelas.TabelaTipoTransporte;
 import tabelas.TabelaPrecos;
-import tabelas.TabelaTempo;
+import tabelas.TabelaTipoTransporte;
 
 public class ProgramaDelivery {
 
@@ -27,13 +24,22 @@ public class ProgramaDelivery {
 		// Para opções do menu de ingredientes
 		String sanduiche_ingredientes[] = { "Bacon", "Calabresa", "Molho Especial", "Presunto com Queijo", "Mussarela",
 				"Molho Especial", "Salada", "Cheddar", "Molho Rose", "Ovo" };
+		
+		//Para opções do menu de ingredientes
+				String massa_ingredientes[] = { "Farinha de Trigo", "Fermento Comum", "Sal", "Açúcar", "Azeite", "Água", "Manteiga",
+						"Óleo", "Fermento Biológico", "Orégano" };
+		//Para opções do menu de ingredientes
+		String bolo_ingredientes[] = { "Açúcar", "Farinha de Trigo", "Fermento Comum", "Sal", "Coco", "Agua", "Manteiga",
+						"Achocolatado", "Fermento Biologico", "Leite" };
 
 		int menu_opcao;// Para armazenar a opção digitada pelo usuário
 		int flag_sair;// Utilizada para controlar os laços do{}while;
 		int distancia = 0;// Armazena a distância digitada pelo usuário
 		int tamanhoVetor = 10;// Determina o tamnho do vetor
 		int total_ingredientes = 0;// Necessário para evitar o estouro do vetor e apresentar os itens corretamente
-
+		Sanduiche sanduiche_personalizado;
+        Massa massa_personalizada;
+        Bolo bolo_personalizado;
 		// Apenas para deixar a apresentação dos menus mais organizadas
 		String divisor_escolhidos = "****************************************************";
 		String divisor = "----------------------------------------------------";
@@ -41,6 +47,8 @@ public class ProgramaDelivery {
 		// Cria o objeto sanduiche já com um vetor de ingredientes para o menu de
 		// ingredientes
 		Sanduiche sanduiche = new Sanduiche(sanduiche_ingredientes);
+		Massa massa = new Massa(massa_ingredientes);
+		Bolo bolo = new Bolo(bolo_ingredientes);
 
 		/*
 		 * O do while garante que seja exibido primeiro o menu e depois solicite uma
@@ -49,8 +57,9 @@ public class ProgramaDelivery {
 		 * escrevendo menos código do que se fosse feito apenas com o while();
 		 * 
 		 */
+		//limpaTela();//No eclipse não funciona, só quando roda no console(cmd por exemplo)
 		do {
-
+			
 			menu = new Menu(opcoes_menu);// Cria o objeto menu
 
 			/*
@@ -65,14 +74,19 @@ public class ProgramaDelivery {
 			menu_opcao = Menu.getOpcaoMenu();// Recebe o número da opção digitado pelo usuário
 
 			switch (menu_opcao) {
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+			//Menu de Bolos
+//-----------------------------------------------------------------------------------------------------------------------------------------------
 
 			case 0:
+				
+			
 				// Armazena os ingredientes escolhidos. Depois o vetor é
-				// passado para o sanduiche_pedido
+				// passado para o sanduiche_pedido0
 				String sanduiche_pedido[] = new String[tamanhoVetor];
 
 				do {
-
+					
 					// A mesma lógica aplicada no menu de opções se aplica aqui no menu de
 					// ingredientes
 					flag_sair = sanduiche.exibirOpcoesIngredientes("Menu de Ingredientes", divisor);
@@ -88,6 +102,7 @@ public class ProgramaDelivery {
 
 					if (menu_opcao >= 0 && menu_opcao < sanduiche.getIngredientes().length
 							&& menu_opcao != sanduiche.getIngredientes().length) {
+						
 						/*
 						 * Esse if comentado permite apenas a escolha da quantidade de ingredientes
 						 * existente no menu de ingredientes. Já o if(total_ingredientes <
@@ -106,21 +121,24 @@ public class ProgramaDelivery {
 							}
 
 							sanduiche_pedido[total_ingredientes] = sanduiche.getUmIngrediente(menu_opcao);
-							Sanduiche sanduiche_ingrediente = new Sanduiche(sanduiche_pedido);
+							sanduiche_personalizado = new Sanduiche(sanduiche_pedido);
 
 							System.out.println(divisor_escolhidos);
 							System.out.println("Ingrediente escolhido = " + sanduiche.getUmIngrediente(menu_opcao));
 							System.out.println("Total de Ingrediente(s) Escolhido(s) = " + (total_ingredientes + 1));
 							System.out.println(divisor_escolhidos);
 
-							for (int i = 0; i < sanduiche_ingrediente.getIngredientes().length; i++) {
+							for (int i = 0; i < sanduiche_personalizado.getIngredientes().length; i++) {
 								// Garante que não sejam exibidos os valores null caso o vetor não esteja todo
 								// populado.
-								if (sanduiche_ingrediente.getUmIngrediente(i) != null)
+								if (sanduiche_personalizado.getUmIngrediente(i) != null)
 									System.out.printf("[%d]........ " + sanduiche_pedido[i] + "\n", i);
 							}
 
 							System.out.println(divisor_escolhidos);
+							
+							
+							
 
 //*************************************************Fim Menu Ingredientes Escolhidos**********************************************************************	
 							total_ingredientes++;
@@ -141,7 +159,9 @@ public class ProgramaDelivery {
 
 				} while (menu_opcao != flag_sair);
 
-//****************************Inicia o Processamento do Pedido********************************************************************				
+//****************************Inicia o Processamento do Pedido*********************************************************************************li	
+			
+				
 				if (total_ingredientes > 0) {
 					System.out.println(divisor);
 					System.out.println("Por favor, digite a distância em Km.");
@@ -184,7 +204,9 @@ public class ProgramaDelivery {
 						e.printStackTrace();
 					}
 
-//**********************************Dados do Pedido********************************************************************************					
+//**********************************Dados do Pedido********************************************************************************		
+					
+					
 					System.out.println();
 					System.out.println(divisor_escolhidos);
 					System.out.println("             FAST DELIVERY\n");
@@ -213,6 +235,8 @@ public class ProgramaDelivery {
 					System.out.println("Obrigado pela preferência.\n");
 					System.out.println(divisor_escolhidos+ "\n");
 					
+					total_ingredientes = 0; //Necessário pq as outras opções de menu a utilizam
+					
 				} else {
 					System.out.println("Você não escolheu nenhum ingrediente.");
 				}
@@ -232,19 +256,359 @@ public class ProgramaDelivery {
 				// flag_sair = -2;
 
 				break;
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+				//Menu de Massas
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
 
 			case 1:
-				System.out.println("Ingredientes da Massa");
-				break;
 
+				// Armazena os ingredientes escolhidos. Depois o vetor é
+				// passado para o sanduiche_pedido
+				String massa_pedido[] = new String[tamanhoVetor];
+
+				do {
+					
+					// A mesma lógica aplicada no menu de opções se aplica aqui no menu de
+					// ingredientes
+					flag_sair = massa.exibirOpcoesIngredientes("Menu de Ingredientes", divisor);
+
+					menu_opcao = Menu.getOpcaoMenu();// Recebe o número da opção digitado pelo usuário
+
+					// A lógica abaixo garante que só entra no if se a opção escolhida estiver no
+					// menu de ingredientes e que não seja a opção de sair
+					// A opção sair será sempre o número consecutivo do total de opções do menu
+					// ingredientes
+
+// *********************************Garante que eu tenha uma opçao válida****************************************************************
+
+					if (menu_opcao >= 0 && menu_opcao < massa.getIngredientes_massa().length
+							&& menu_opcao !=  massa.getIngredientes_massa().length) {
+						
+						/*
+						 * Esse if comentado permite apenas a escolha da quantidade de ingredientes
+						 * existente no menu de ingredientes. Já o if(total_ingredientes <
+						 * getIngredientes_massa().length), permite a quantidade de ingredientes
+						 * possíveis no vetor
+						 */
+						// if(total_ingredientes < massa.getIngredientes_massa().length)
+
+//************************Determina quantos itens posso escolher********************************************************************************
+						if (total_ingredientes < massa.getIngredientes_massa().length) {
+                            //Esse for é apenas para mostrar a msg que e se o ingrediente já foi escolhido
+							for (int i = 0; i < massa_pedido.length; i++) {
+								if (massa.getUmIngredienteMassa(menu_opcao).equals(massa_pedido[i])) {
+									System.out.println("Você já escolheu esse ingrediente!");
+								}
+							}
+
+							massa_pedido[total_ingredientes] = massa.getUmIngredienteMassa(menu_opcao);
+							massa_personalizada = new Massa(massa_pedido);
+							
+
+							System.out.println(divisor_escolhidos);
+							System.out.println("Ingrediente escolhido = " + massa.getUmIngredienteMassa(menu_opcao));
+							System.out.println("Total de Ingrediente(s) Escolhido(s) = " + (total_ingredientes + 1));
+							System.out.println(divisor_escolhidos);
+
+							for (int i = 0; i < massa_personalizada.getIngredientes_massa().length; i++) {
+								// Garante que não sejam exibidos os valores null caso o vetor não esteja todo
+								// populado.
+								if (massa_personalizada.getUmIngredienteMassa(i) != null)
+									System.out.printf("[%d]........ " + massa_pedido[i] + "\n", i);
+							}
+
+							System.out.println(divisor_escolhidos);
+							
+							
+							
+
+//*************************************************Fim Menu Ingredientes Escolhidos**********************************************************************	
+							total_ingredientes++;
+
+							// Sai do menu de ingredientes automaticamente
+							if (total_ingredientes == massa.getIngredientes_massa().length) {
+								menu_opcao = massa.getIngredientes_massa().length;
+							}
+
+						}
+//A lógica evita que ao sair do menu de ingredientes sem selecionar nenhum item seja exibida apenas a msg "Você não escolheu nenhum ingrediente."
+					} else if (menu_opcao != massa.getIngredientes_massa().length
+							&& total_ingredientes < massa.getIngredientes_massa().length) {
+
+						System.out.println("Você selecionou uma opção inválida!\n");
+
+					}
+
+				} while (menu_opcao != flag_sair);
+
+//****************************Inicia o Processamento do Pedido********************************************************************	
+			
+				
+				if (total_ingredientes > 0) {
+					System.out.println(divisor);
+					System.out.println("Por favor, digite a distância em Km.");
+
+					try {
+						distancia = Menu.getOpcaoMenu();
+					} catch (InputMismatchException e) {
+						System.out.print("O valor informado não é um número!");
+					}
+
+				
+					String status_progresso = ">";// Símbola para indicar o processamento
+					double limite_status = 20;// Quantidade de de caracteres que serão exibidos
+
+					// Bloco para simular o status do progresso do pedido
+					try {
+						System.out.println("   Processando o Pedido");
+						System.out.println(divisor);
+						System.out.println("          Aguarde");
+						System.out.printf("0%% ");
+						// comecei i = 1 caso precise realizar cálculo	de porcentagem do preocessamento do pedido.
+						for (int i = 1; i <= limite_status; i++) {																	
+																	
+							System.out.print(status_progresso);// Exibie o progresso
+							status_progresso.concat(status_progresso);
+							Thread.sleep(200);// intervalo entre cada iteração do laço
+						}
+						System.out.printf(" 100%%");
+						Thread.sleep(1000);// apenas para visualizar o término do processamento
+
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+//**********************************Dados do Pedido********************************************************************************		
+					
+					
+					System.out.println();
+					System.out.println(divisor_escolhidos);
+					System.out.println("             FAST DELIVERY\n");
+					System.out.println("       Pedido Realizado com Sucesso");
+					System.out.println("        Tipo de Lanche: Massa");					
+					System.out.println("     " + getDataHora()+"\n");
+					System.out.println("          Lista de Ingredientes");
+					System.out.println(divisor_escolhidos);
+                    
+					//Exibe os dados do Pedido
+					for (int i = 0; i < massa_pedido.length; i++) {
+						if (massa_pedido[i] != null)
+							System.out.printf("[%d]........ " + massa_pedido[i] + "\n", i);
+					}
+					
+					// Formata um valor de acordo com a máscara passada -> "###,##0.00"
+					DecimalFormat df = new DecimalFormat("###,##0.00");					
+					//Calcula o Preço
+					double total_pedido = massa.calculcarPreco(TabelaPrecos.MASSA, distancia, TabelaTipoTransporte.KM_Moto);// Calcula o valor total do pedido
+					//Exibe o Total do Pedido
+					System.out.println("\nTotal do Pedido:....... R$" + df.format(total_pedido));
+					
+					//Calcula o tempo de entrega
+				 massa.calculaTempoEntrega(distancia, sanduiche.getTempo_por_km_em_minutos(), sanduiche.getTempo_preparo_sanduiche());
+					
+					System.out.println("Obrigado pela preferência.\n");
+					System.out.println(divisor_escolhidos+ "\n");
+					
+					total_ingredientes = 0;
+					
+				} else {
+					System.out.println("Você não escolheu nenhum ingrediente.");
+				}
+
+				/*
+				 * Como estou usando as mesmas variáveis para para receber as opções de menu e
+				 * submenu, tenho que setar menu_opcao e flag_sair com valores diferentes e que
+				 * não estejam em um intervalo válido do menu. Isso permite voltar ao Menu
+				 * Principal. Caso não faça isso, ao terminar o processamento do pedido, o
+				 * programa será encerrado. Fica a seu critério se quer voltar ao menu Principal
+				 * ou encerrar o programa ao processar o pedido. Pode ser declarada variáveis
+				 * deiferentes para menu e submenu como opção para não usar essa lógica descrita
+				 * acima
+				 */
+
+				menu_opcao = -1;
+				// flag_sair = -2;
+
+
+				break;
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+				//Menu de Bolos
+//-----------------------------------------------------------------------------------------------------------------------------------------------
 			case 2:
-				System.out.println("Ingredientes da Bolo");
+
+				// Armazena os ingredientes escolhidos. Depois o vetor é
+				// passado para o sanduiche_pedido
+				String bolo_pedido[] = new String[tamanhoVetor];
+
+				do {
+					
+					// A mesma lógica aplicada no menu de opções se aplica aqui no menu de
+					// ingredientes
+					flag_sair = bolo.exibirOpcoesIngredientes("       Menu de Ingredientes", divisor);
+
+					menu_opcao = Menu.getOpcaoMenu();// Recebe o número da opção digitado pelo usuário
+
+					// A lógica abaixo garante que só entra no if se a opção escolhida estiver no
+					// menu de ingredientes e que não seja a opção de sair
+					// A opção sair será sempre o número consecutivo do total de opções do menu
+					// ingredientes
+
+// *********************************Garante que eu tenha uma opçao válida****************************************************************
+
+					if (menu_opcao >= 0 && menu_opcao < bolo.getIngredientes_bolo().length
+							&& menu_opcao != sanduiche.getIngredientes().length) {
+						
+						/*
+						 * Esse if comentado permite apenas a escolha da quantidade de ingredientes
+						 * existente no menu de ingredientes. Já o if(total_ingredientes <
+						 * sanduiche.getIngredientes().length), permite a quantidade de ingredientes
+						 * possíveis no vetor
+						 */
+						// if(total_ingredientes < sanduiche.getIngredientes().length)
+
+//************************Determina quantos itens posso escolher********************************************************************************
+						if (total_ingredientes < bolo.getIngredientes_bolo().length) {
+                            //Esse for é apenas para mostrar a msg que e o ingrediente já foi escolhido
+							for (int i = 0; i < bolo_pedido.length; i++) {
+								if (bolo.getUmIngredienteBolo(menu_opcao).equals(bolo_pedido[i])) {
+									System.out.println("Você já escolheu esse ingrediente!");
+								}
+							}
+
+							bolo_pedido[total_ingredientes] = bolo.getUmIngredienteBolo(menu_opcao);
+							bolo_personalizado = new Bolo(bolo_pedido);
+
+							System.out.println(divisor_escolhidos);
+							System.out.println("Ingrediente escolhido = " + bolo.getUmIngredienteBolo(menu_opcao));
+							System.out.println("Total de Ingrediente(s) Escolhido(s) = " + (total_ingredientes + 1));
+							System.out.println(divisor_escolhidos);
+
+							for (int i = 0; i < bolo_personalizado.getIngredientes_bolo().length; i++) {
+								// Garante que não sejam exibidos os valores null caso o vetor não esteja todo
+								// populado.
+								if (bolo_personalizado.getUmIngredienteBolo(i) != null)
+									System.out.printf("[%d]........ " + bolo_pedido[i] + "\n", i);
+							}
+
+							System.out.println(divisor_escolhidos);
+							
+							
+							
+
+//*************************************************Fim Menu Ingredientes Escolhidos**********************************************************************	
+							total_ingredientes++;
+
+							// Sai do menu de ingredientes automaticamente
+							if (total_ingredientes == bolo.getIngredientes_bolo().length) {
+								menu_opcao = bolo.getIngredientes_bolo().length;
+							}
+
+						}
+                        //A lógica evita que ao sair do menu de ingredientes sem selecionar nenhum item seja exibida
+						//apenas a msg "Você não escolheu nenhum ingrediente."
+					} else if (menu_opcao != bolo.getIngredientes_bolo().length
+							&& total_ingredientes < bolo.getIngredientes_bolo().length) {
+
+						System.out.println("Você selecionou uma opção inválida!\n");
+
+					}
+
+				} while (menu_opcao != flag_sair);
+
+//****************************Inicia o Processamento do Pedido********************************************************************	
+			
+				
+				if (total_ingredientes > 0) {
+					System.out.println(divisor);
+					System.out.println("Por favor, digite a distância em Km.");
+
+					try {
+						distancia = Menu.getOpcaoMenu();
+					} catch (InputMismatchException e) {
+						System.out.print("O valor informado não é um número!");
+					}
+
+					
+					String status_progresso = ">";// Símbola para indicar o processamento
+					double limite_status = 20;// Quantidade de de caracteres que serão exibidos
+
+					// Bloco para simular o status do progresso do pedido
+					try {
+						System.out.println("   Processando o Pedido");
+						System.out.println(divisor);
+						System.out.println("          Aguarde");
+						System.out.printf("0%% ");
+						for (int i = 1; i <= limite_status; i++) {// comecei i = 1 caso precise realizar cálculo
+																	// de
+																	// porcetagem do preocessamento do pedido.
+							System.out.print(status_progresso);// Exibie o progresso
+							status_progresso.concat(status_progresso);
+							Thread.sleep(200);// intervalo entre uma cada iteração do laço
+						}
+						System.out.printf(" 100%%");
+						Thread.sleep(1000);// apenas para visualizar o termino do processamento
+
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+//**********************************Dados do Pedido********************************************************************************		
+					
+					
+					System.out.println();
+					System.out.println(divisor_escolhidos);
+					System.out.println("             FAST DELIVERY\n");
+					System.out.println("       Pedido Realizado com Sucesso");
+					System.out.println("        Tipo de Lanche: Bolo");					
+					System.out.println("     " + getDataHora()+"\n");
+					System.out.println("          Lista de Ingredientes");
+					System.out.println(divisor_escolhidos);
+                    
+					//Exibe os dados do Pedido
+					for (int i = 0; i < bolo_pedido.length; i++) {
+						if (bolo_pedido[i] != null)
+							System.out.printf("[%d]........ " + bolo_pedido[i] + "\n", i);
+					}
+					
+					// Formata uma valor de acordo com a máscara passada -> "###,##0.00"
+					DecimalFormat df = new DecimalFormat("###,##0.00");					
+					//Calcula o Preço
+					double total_pedido = sanduiche.calculcarPreco(TabelaPrecos.BOLO, distancia, TabelaTipoTransporte.KM_Moto);
+					System.out.println("\nTotal do Pedido:....... R$" + df.format(total_pedido));
+					
+					//Calcula o tempo de entrega
+				 sanduiche.calculaTempoEntrega(distancia, sanduiche.getTempo_por_km_em_minutos(), sanduiche.getTempo_preparo_sanduiche());
+					
+					System.out.println("Obrigado pela preferência.\n");
+					System.out.println(divisor_escolhidos+ "\n");
+					
+					total_ingredientes = 0; //Necessário pq as outras opções de menu a utilizam
+					
+				} else {
+					System.out.println("Você não escolheu nenhum ingrediente.");
+				}
+
+				/*
+				 * Como estou usando as mesmas variáveis para para receber as opções de menu e
+				 * submenu, tenho que setar menu_opcao e flag_sair com valores diferentes e que
+				 * não estejam em um intervalo válido do menu. Isso permite voltar ao Menu
+				 * Principal. Caso não faça isso, ao terminar o processamento do pedido, o
+				 * programa será encerrado. Fica a seu critério se quer voltar ao menu Principal
+				 * ou encerrar o programa ao processar o pedido. Pode ser declarada variáveis
+				 * deiferentes para menu e submenu como opção para não usar essa lógica descrita
+				 * acima
+				 */
+
+				menu_opcao = -1;
+				// flag_sair = -2;
 				break;
 
 			default:
 				// Essa verificação impede exibir a mensagem abaixo quando for escolhida a opção
-				// de sair.
-				// Pois sair é uma opção válida
+				// de sair. Pois sair é uma opção válida
 				if (menu_opcao != flag_sair)
 					System.out.println("Você selecionou uma opção inválida!\n");
 				break;
@@ -273,6 +637,33 @@ public class ProgramaDelivery {
 		
 		return "Data: " + dataFormatada + " Hora: " + horaFormatada;
 	
+	}
+	
+	
+
+	//Só funciona no cmd
+	    public static void limpaTela() {
+	      
+	        //Limpa a tela no windows, no linux e no MacOS
+	    	System.out.println(System.getProperty("os.name").contains("Windows"));
+	        if (System.getProperty("os.name").contains("Windows"))
+				try {
+					new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else
+				try {
+					Runtime.getRuntime().exec("clear");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    
 	}
 
 }

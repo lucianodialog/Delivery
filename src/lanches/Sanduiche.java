@@ -1,8 +1,8 @@
 package lanches;
 
-import interfaces.MenuIngredientes;
 
-public class Sanduiche extends Lanche implements MenuIngredientes{
+
+public class Sanduiche extends Lanche{
 
 	
 	private String ingredientes[] = new String[10];
@@ -44,8 +44,10 @@ public class Sanduiche extends Lanche implements MenuIngredientes{
 	@Override
 	public int exibirOpcoesIngredientes(String titulo, String divisor) {
 		
+		
 		System.out.println(divisor);
-		System.out.println(titulo);
+		System.out.println("              Sanduíche");
+		System.out.println("         " + titulo);
 		System.out.println(divisor);
 		
 		for (int index = 0; index < ingredientes.length; index++) {

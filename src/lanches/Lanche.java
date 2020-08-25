@@ -1,12 +1,15 @@
 package lanches;
 
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Constantes.Constantes;
+import interfaces.MenuIngredientes;
 
-public abstract class Lanche {
+public abstract class Lanche implements MenuIngredientes{
 	/*
 	 * A classe foi declarada como abstract porque não há a necessidade de ser
 	 * instanciada.
@@ -40,7 +43,7 @@ public abstract class Lanche {
 			sdf = new SimpleDateFormat("HH:mm");
 			tempo = Integer.parseInt(sdf.format(dt).subSequence(0, 2).toString());
 			
-			if (tempo > 00)
+			if (tempo > 0)
 				System.out.println("Tempo de entrega:...... " + sdf.format(dt) + " Hora(s)\n");
 			else
 				System.out.println("Tempo de entrega:...... " + sdf.format(dt) + " minuto(s)\n");
